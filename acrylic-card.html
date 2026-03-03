@@ -356,6 +356,197 @@
             color: #b842a8; /* 影塑主色 */
         }
 
+        /* ========== 新增：商品规格弹窗样式 ========== */
+        /* 遮罩层 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        /* 弹窗容器 */
+        .spec-modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 450px;
+            height: 100vh;
+            background: white;
+            z-index: 1001;
+            padding: 20px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: none;
+        }
+
+        /* 弹窗显示状态 */
+        .modal-active .modal-overlay {
+            display: block;
+        }
+
+        .modal-active .spec-modal {
+            display: block;
+            transform: translateX(0);
+        }
+
+        /* 弹窗头部 */
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .modal-desc {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        /* 商品图片和价格区域 */
+        .product-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .product-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .price-section {
+            flex: 1;
+        }
+
+        .price-tiers {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .price-tier {
+            font-size: 14px;
+        }
+
+        .price-tier .price {
+            color: #ff4444;
+            font-weight: 500;
+            margin-right: 4px;
+        }
+
+        .price-tier .range {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* 规格选项区域 */
+        .spec-section {
+            margin-bottom: 25px;
+        }
+
+        .spec-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .spec-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .spec-option {
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .spec-option:hover {
+            border-color: #b842a8;
+        }
+
+        .spec-option.active {
+            border-color: #b842a8;
+            background: rgba(184, 66, 168, 0.05);
+            color: #b842a8;
+        }
+
+        /* 板材选项特殊样式（图片+文字） */
+        .board-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .board-option img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 5px;
+            object-fit: cover;
+        }
+
+        /* 弹窗底部按钮 */
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cancel-btn {
+            padding: 10px 25px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .cancel-btn:hover {
+            border-color: #ccc;
+        }
+
+        .upload-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            background: #b842a8;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .upload-btn:hover {
+            background: #a03890;
+        }
+
         /* 响应式适配 - 沿用影塑的适配逻辑 */
         @media (max-width: 768px) {
             .header-container {
@@ -392,6 +583,11 @@
 
             .logo-img {
                 height: 36px;
+            }
+
+            /* 弹窗响应式 */
+            .spec-modal {
+                width: 100%;
             }
         }
 
@@ -453,20 +649,20 @@
         <!-- 商品卡片容器 - 保留原内容 -->
         <div class="product-cards">
             <div class="product-card">
-                <img src="https://picsum.photos/200/300?random=1" alt="亚克力合影卡样式1">
-                <button class="custom-btn">去定制</button>
+                <img src="https://picsum.photos/200/300?random=1" alt="新春制品样式1">
+                <button class="custom-btn" data-product="新春制品1">去定制</button>
             </div>
             <div class="product-card">
-                <img src="https://picsum.photos/200/300?random=2" alt="亚克力合影卡样式2">
-                <button class="custom-btn">去定制</button>
+                <img src="https://picsum.photos/200/300?random=2" alt="新春制品样式2">
+                <button class="custom-btn" data-product="新春制品2">去定制</button>
             </div>
             <div class="product-card">
-                <img src="https://picsum.photos/200/300?random=3" alt="亚克力合影卡样式3">
-                <button class="custom-btn">去定制</button>
+                <img src="https://picsum.photos/200/300?random=3" alt="新春制品样式3">
+                <button class="custom-btn" data-product="新春制品3">去定制</button>
             </div>
             <div class="product-card">
-                <img src="https://picsum.photos/200/300?random=4" alt="亚克力合影卡样式4">
-                <button class="custom-btn">去定制</button>
+                <img src="https://picsum.photos/200/300?random=4" alt="新春制品样式4">
+                <button class="custom-btn" data-product="新春制品4">去定制</button>
             </div>
         </div>
     </div>
@@ -522,6 +718,81 @@
         </div>
     </footer>
 
+    <!-- ========== 新增：商品规格弹窗 ========== -->
+    <!-- 遮罩层 -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    
+    <!-- 弹窗主体 -->
+    <div class="spec-modal" id="specModal">
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalProductTitle">选择商品规格</h2>
+            <p class="modal-desc">下单后45天发货 暂不支持超时赔付</p>
+        </div>
+
+        <div class="product-info">
+            <img src="https://picsum.photos/200/300?random=1" alt="商品图片" class="product-img" id="modalProductImg">
+            <div class="price-section">
+                <div class="price-tiers">
+                    <div class="price-tier">
+                        <span class="price">¥2.60</span>
+                        <span class="range">1~9个</span>
+                    </div>
+                    <div class="price-tier">
+                        <span class="price">¥2.50</span>
+                        <span class="range">10~19个</span>
+                    </div>
+                    <div class="price-tier">
+                        <span class="price">¥2.30</span>
+                        <span class="range">20~49个</span>
+                    </div>
+                    <div class="price-tier">
+                        <span class="price">¥2.20</span>
+                        <span class="range">≥50个</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 尺寸选择 -->
+        <div class="spec-section">
+            <label class="spec-label">选择尺寸</label>
+            <div class="spec-options">
+                <div class="spec-option" data-type="size" data-value="65x95mm">65x95mm</div>
+                <div class="spec-option" data-type="size" data-value="85x130mm">85x130mm</div>
+            </div>
+        </div>
+
+        <!-- 板材选择 -->
+        <div class="spec-section">
+            <label class="spec-label">选择板材</label>
+            <div class="spec-options">
+                <div class="spec-option board-option" data-type="board" data-value="板材1">
+                    <img src="https://picsum.photos/50/50?random=10" alt="板材1">
+                    <span>板材1</span>
+                </div>
+                <div class="spec-option board-option" data-type="board" data-value="板材2">
+                    <img src="https://picsum.photos/50/50?random=11" alt="板材2">
+                    <span>板材2</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工艺选择 -->
+        <div class="spec-section">
+            <label class="spec-label">选择工艺</label>
+            <div class="spec-options">
+                <div class="spec-option" data-type="craft" data-value="工艺1">工艺1</div>
+                <div class="spec-option" data-type="craft" data-value="工艺2">工艺2</div>
+            </div>
+        </div>
+
+        <!-- 弹窗底部按钮 -->
+        <div class="modal-footer">
+            <button class="cancel-btn" id="cancelBtn">取消</button>
+            <button class="upload-btn" id="uploadBtn">上传图片</button>
+        </div>
+    </div>
+
     <script>
         // 导航菜单激活状态切换
         const navItems = document.querySelectorAll('.nav-menu li');
@@ -547,6 +818,92 @@
                     }
                 }
             });
+        });
+
+        // ========== 新增：弹窗相关逻辑 ==========
+        // 获取元素
+        const customBtns = document.querySelectorAll('.custom-btn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const specModal = document.getElementById('specModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const modalProductTitle = document.getElementById('modalProductTitle');
+        const modalProductImg = document.getElementById('modalProductImg');
+        const specOptions = document.querySelectorAll('.spec-option');
+
+        // 打开弹窗
+        function openModal(productName, productImg) {
+            // 设置弹窗中的商品信息
+            modalProductTitle.textContent = `${productName} - 选择商品规格`;
+            modalProductImg.src = productImg;
+            modalProductImg.alt = productName;
+            
+            // 显示弹窗
+            document.body.classList.add('modal-active');
+            // 禁止页面滚动
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.body.classList.remove('modal-active');
+            // 恢复页面滚动
+            document.body.style.overflow = '';
+            // 重置规格选项选中状态
+            specOptions.forEach(option => option.classList.remove('active'));
+        }
+
+        // 为定制按钮添加点击事件
+        customBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productName = this.getAttribute('data-product');
+                const productImg = this.parentElement.querySelector('img').src;
+                openModal(productName, productImg);
+            });
+        });
+
+        // 关闭弹窗事件
+        cancelBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', closeModal);
+
+        // 规格选项点击事件（单选）
+        specOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const type = this.getAttribute('data-type');
+                // 移除同类型的所有选中状态
+                document.querySelectorAll(`.spec-option[data-type="${type}"]`).forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                // 添加当前选中状态
+                this.classList.add('active');
+            });
+        });
+
+        // 上传图片按钮点击事件（示例）
+        uploadBtn.addEventListener('click', function() {
+            // 获取选中的规格
+            const selectedOptions = {};
+            specOptions.forEach(option => {
+                if (option.classList.contains('active')) {
+                    selectedOptions[option.getAttribute('data-type')] = option.getAttribute('data-value');
+                }
+            });
+
+            // 简单验证
+            if (!selectedOptions.size || !selectedOptions.board || !selectedOptions.craft) {
+                alert('请选择完整的商品规格！');
+                return;
+            }
+
+            // 这里可以添加实际的上传图片逻辑
+            alert(`已选择规格：
+尺寸：${selectedOptions.size}
+板材：${selectedOptions.board}
+切割工艺：${selectedOptions.craft}
+即将跳转到图片上传页面...`);
+            
+            // 关闭弹窗（实际项目中可替换为跳转或显示上传组件）
+            closeModal();
         });
     </script>
 </body>
