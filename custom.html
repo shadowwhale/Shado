@@ -584,7 +584,10 @@
         document.getElementById('goto-cart').addEventListener('click', function() {
             window.location.href = 'cart.html';
         });
-
+ // 7. 导航跳转逻辑 - 跳回主页面
+    document.getElementById('back-to-goods').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
         // 3. 处理新春制品的跳转逻辑
         document.getElementById('spring-products').addEventListener('click', function(e) {
             // 阻止事件冒泡，避免触发其他事件
