@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>影塑 - 二次元定制购物车</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    }
+    /* 品牌主色-贴合商业计划书 + 新设计风格融合 */
+    :root {
+      --pink: #b842a8; /* 新主色 */
+      --light-pink: #e374d8;
+      --yellow: #ffdd55;
+      --text-dark: #333;
+      --text-gray: #666;
+      --text-light: #999;
+      --bg-white: #fff;
+      --bg-gray: #fdf6fb; /* 新背景色 */
+      --border: #eee;
+      --shadow: 0 2px 8px rgba(184, 66, 168, 0.15);
+      --shadow-hover: 0 4px 12px rgba(184, 66, 168, 0.2);
+    }
+    body {
+      background: var(--bg-gray);
+      color: var(--text-dark);
+      padding-bottom: 100px;
+      overflow-x: hidden;
+    }
+
+    /* ========== 新导航栏样式 (替换原有header) ========== */
+    header {
+      background: linear-gradient(90deg, #fffbe8 0%, #f9e8ff 100%);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--light-pink), var(--pink));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 500px;
+      margin: 0 20px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      font-size: 14px;
+      background: #f9f9f9;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--pink);
+      background: white;
+    }
+
+    .login-btn {
+      color: #444;
+      font-size: 14px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .login-btn:hover {
+      color: var(--pink);
+    }
+
+    .nav-tabs {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 12px 0;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    /* 跳转按钮的特殊样式（加小箭头） */
+    .jump-btn::after {
+      content: ' ↗';
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .tab-btn.active,
+    .tab-btn:hover {
+      color: var(--pink);
+      font-weight: 500;
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--pink);
+    }
+
+    /* 覆盖跳转按钮的下划线，避免和箭头冲突 */
+    .jump-btn.active::after {
+      content: ' ↗';
+      background: none;
+      width: auto;
+      height: auto;
+      font-size: 12px;
+      opacity: 1;
+    }
+
+    /* ========== 原有购物车样式适配新主色 ========== */
+    /* 瀑布式页面容器-自适应 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* 全选栏 */
+    .cart-select-all {
+      background: var(--bg-white);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow);
+    }
+    .checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .checkbox.checked {
+      background: var(--pink);
+      border-color: var(--pink);
+    }
+    .checkbox.checked::after {
+      content: "✓";
+      font-size: 12px;
+      color: #fff;
+      font-weight: 600;
+    }
+    .select-all-text {
+      font-size: 15px;
+      font-weight: 500;
+    }
+    /* 商品项-定制属性贴合商业计划书 */
+    .cart-item {
+      background: var(--bg-white);
+      border-radius: 10px;
+      padding: 18px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: all 0.3s;
+    }
+    .cart-item:hover {
+      box-shadow: var(--shadow-hover);
+    }
+    /* 限量库存锁定倒计时-核心功能 */
+    .stock-lock {
+      position: absolute;
+      top: 18px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #ff4d4f;
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .stock-lock i {
+      font-size: 12px;
+    }
+    .item-tag {
+      position: absolute;
+      top: 48px;
+      right: 16px;
+      background: var(--yellow);
+      color: #856404;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .item-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 8px;
+      background: #f2f2f2;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .item-info {
+      flex: 1;
+      min-width: 0;
+      padding-top: 4px;
+    }
+    .item-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .item-custom {
+      font-size: 13px;
+      color: var(--pink);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .item-spec {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .item-opt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .item-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--pink);
+    }
+    .num-group {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .num-btn {
+      width: 30px;
+      height: 30px;
+      border: none;
+      background: #f7f7f7;
+      color: var(--text-gray);
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .num-btn:hover {
+      background: rgba(184, 66, 168, 0.1);
+      color: var(--pink);
+    }
+    .num-input {
+      width: 40px;
+      height: 30px;
+      border: none;
+      text-align: center;
+      outline: none;
+      font-size: 14px;
+    }
+    .item-del {
+      position: absolute;
+      bottom: 18px;
+      right: 16px;
+      color: var(--text-light);
+      font-size: 12px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .item-del:hover {
+      color: #ff4d4f;
+    }
+    /* 空购物车-看板娘+热门设定集快速加购 */
+    .empty-cart {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+      text-align: center;
+      gap: 24px;
+    }
+    .empty-avatar {
+      width: 120px;
+      height: 120px;
+    }
+    .empty-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .empty-text {
+      font-size: 16px;
+      color: var(--text-gray);
+      line-height: 1.5;
+    }
+    .empty-text span {
+      color: var(--pink);
+      font-weight: 600;
+    }
+    /* 热门设定集-贴合商业计划书OC定制 */
+    .hot-set {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      margin-top: 12px;
+    }
+    .set-item {
+      background: var(--bg-white);
+      border: 1px solid var(--pink);
+      color: var(--pink);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .set-item:hover {
+      background: var(--pink);
+      color: #fff;
+    }
+    /* 需求卡分享-核心功能 */
+    .share-card {
+      position: fixed;
+      bottom: 100px;
+      right: 16px;
+      z-index: 90;
+      width: 44px;
+      height: 44px;
+      background: var(--pink);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      box-shadow: var(--shadow-hover);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .share-card:hover {
+      transform: scale(1.1);
+    }
+    .share-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+    }
+    .share-content {
+      background: var(--bg-white);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      padding: 24px;
+    }
+    .share-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--pink);
+    }
+    .share-qrcode {
+      width: 180px;
+      height: 180px;
+      background: #f2f2f2;
+      margin: 0 auto 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .share-opt {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .share-btn {
+      flex: 1;
+      padding: 8px 0;
+      border: 1px solid var(--pink);
+      border-radius: 8px;
+      background: var(--bg-white);
+      color: var(--pink);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .share-btn.primary {
+      background: var(--pink);
+      color: #fff;
+    }
+    .share-close {
+      margin-top: 20px;
+      width: 100%;
+      padding: 8px 0;
+      border: none;
+      background: var(--bg-gray);
+      border-radius: 8px;
+      color: var(--text-gray);
+      cursor: pointer;
+    }
+    /* 底部结算栏-粘性 */
+    .cart-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--bg-white);
+      border-top: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+      z-index: 98;
+    }
+    .total-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .total-price {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--pink);
+    }
+    .total-desc {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+    .checkout-btn {
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(184, 66, 168, 0.3);
+    }
+    .checkout-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    /* ========== 右侧悬浮栏 ========== */
+    .sidebar {
+      position: fixed;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 99;
+    }
+
+    .sidebar-item {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 20px;
+      cursor: pointer;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .sidebar-item:hover {
+      color: var(--pink);
+    }
+
+    /* ========== 全设备自适应媒体查询 ========== */
+    @media (max-width: 375px) {
+      .item-img {
+        width: 80px;
+        height: 80px;
+      }
+      .checkout-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      .total-price {
+        font-size: 17px;
+      }
+      .hot-set {
+        gap: 8px;
+      }
+      .set-item {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .header-top {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .search-bar {
+        order: 3;
+        flex: 100%;
+        margin: 0;
+      }
+      .nav-tabs {
+        gap: 15px;
+      }
+      .tab-btn {
+        font-size: 14px;
+      }
+    }
+    @media (min-width: 750px) {
+      .cart-item {
+        max-width: 700px;
+        margin: 0 auto 12px;
+      }
+      .cart-select-all {
+        max-width: 700px;
+        margin: 12px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 新样式导航栏 -->
+  <header>
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-icon">影</div>
+        <span>影塑</span>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="搜索二次元定制商品">
+      </div>
+      <div class="login-btn">点击登录</div>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="tab-btn" id="back-to-goods">全部商品</button>
+      <button class="tab-btn" id="back-to-about">关于影塑</button>
+      <button class="tab-btn jump-btn" id="goto-course">教程中心</button>
+      <button class="tab-btn jump-btn active" id="goto-cart">我的购物车</button>
+    </div>
+  </header>
+
+  <!-- 主内容容器 -->
+  <div class="container">
+    <!-- 全选栏 -->
+    <div class="cart-select-all">
+      <div class="checkbox checked"></div>
+      <span class="select-all-text">全选（2件定制商品）</span>
+    </div>
+
+    <!-- 购物车商品列表 -->
+    <div class="cart-list">
+      <!-- 商品1-限量材料+库存锁定 -->
+      <div class="cart-item">
+        <div class="checkbox checked"></div>
+        <div class="stock-lock"><i>🔒</i><span class="countdown" data-time="15">15:00</span>后解锁库存</div>
+        <div class="item-tag">定制款</div>
+        <div class="item-img">
+          <img src="https://via.placeholder.com/90/b842a8/fff" alt="OC手办定制">
+        </div>
+        <div class="item-info">
+          <div class="item-name">银发兽耳剑士OC高精度手办定制</div>
+          <div class="item-custom">OC设计+3D建模+实体化全流程</div>
+          <div class="item-spec">规格：1/7涂装成品 | 材质：PVC+限量珠光漆 | 配套：NFT数字身份+AR互动</div>
+          <div class="item-opt">
+            <div class="item-price">¥399.00</div>
+            <div class="num-group">
+              <button class="num-btn">-</button>
+              <input type="text" class="num-input" value="1" readonly>
+              <button class="num-btn">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item-del">删除</div>
+      </div>
+
+      <!-- 商品2-绝版布料 -->
+      <div class="cart-item">
+        <div class="checkbox checked"></div>
+        <div class="stock-lock"><i>🔒</i><span class="countdown" data-time="12">12:45</span>后解锁库存</div>
+        <div class="item-tag">绝版材料</div>
+        <div class="item-img">
+          <img src="https://via.placeholder.com/90/e374d8/333" alt="定制立牌">
+        </div>
+        <div class="item-info">
+          <div class="item-name">古风旗袍OC亚克力立牌定制</div>
+          <div class="item-custom">来图定制+绝版烫金布料纹印</div>
+          <div class="item-spec">规格：15cm镭射立牌 | 材质：高透亚克力+绝版金箔 | 配套：收藏卡牌+背景册</div>
+          <div class="item-opt">
+            <div class="item-price">¥59.00</div>
+            <div class="num-group">
+              <button class="num-btn">-</button>
+              <input type="text" class="num-input" value="1" readonly>
+              <button class="num-btn">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item-del">删除</div>
+      </div>
+    </div>
+
+    <!-- 空购物车-看板娘+热门设定集 -->
+    <div class="empty-cart">
+      <div class="empty-avatar">
+        <img src="https://via.placeholder.com/120/ffdd55/333" alt="看板娘">
+      </div>
+      <div class="empty-text">呜，主人是打算把阿宅抛弃了吗？<br/>快来pick热门设定集，一键加购定制吧！</div>
+      <div class="hot-set">
+        <div class="set-item">兽耳少女OC</div>
+        <div class="set-item">古风侠客OC</div>
+        <div class="set-item">赛博朋克角色</div>
+        <div class="set-item">Q版萌系定制</div>
+        <div class="set-item">限量珠光漆手办</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧悬浮栏 -->
+  <div class="sidebar">
+    <div class="sidebar-item">💬</div>
+    <div class="sidebar-item">✍️</div>
+    <div class="sidebar-item">👇</div>
+  </div>
+
+  <!-- 需求卡分享悬浮按钮 -->
+  <div class="share-card" id="shareBtn">📤</div>
+
+  <!-- 底部结算栏 -->
+  <div class="cart-footer">
+    <div class="total-info">
+      <div class="checkbox checked"></div>
+      <div>
+        <div class="total-price">¥458.00</div>
+        <div class="total-desc">含定制服务费 · 全国包邮</div>
+      </div>
+    </div>
+    <button class="checkout-btn">去定制结算</button>
+  </div>
+
+  <!-- 需求卡分享弹窗 -->
+  <div class="share-modal" id="shareModal">
+    <div class="share-content">
+      <div class="share-title">定制需求卡分享</div>
+      <div class="share-qrcode">
+        <span>扫码查看定制参数</span>
+      </div>
+      <div class="share-opt">
+        <button class="share-btn primary">分享给画师</button>
+        <button class="share-btn">分享给亲友</button>
+      </div>
+      <button class="share-close" id="shareClose">关闭</button>
+    </div>
+  </div>
+
+  <script>
+    // 全局元素获取
+    const shareBtn = document.getElementById('shareBtn');
+    const shareModal = document.getElementById('shareModal');
+    const shareClose = document.getElementById('shareClose');
+    const cartList = document.querySelector('.cart-list');
+    const emptyCart = document.querySelector('.empty-cart');
+    const itemDels = document.querySelectorAll('.item-del');
+    const checkboxes = document.querySelectorAll('.checkbox');
+    const allCheck = document.querySelector('.cart-select-all .checkbox');
+    const footerCheck = document.querySelector('.cart-footer .checkbox');
+    const numBtns = document.querySelectorAll('.num-btn');
+    const countdowns = document.querySelectorAll('.countdown');
+
+    // 1. 库存锁定15分钟倒计时核心逻辑
+    countdowns.forEach(el => {
+      let totalSeconds = el.dataset.time * 60;
+      if (el.innerText.includes(':')) {
+        const [m, s] = el.innerText.split(':').map(Number);
+        totalSeconds = m * 60 + s;
+      }
+      const timer = setInterval(() => {
+        totalSeconds--;
+        if (totalSeconds < 0) {
+          clearInterval(timer);
+          el.parentElement.innerHTML = '<i>🔓</i>库存已解锁';
+          return;
+        }
+        const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+        const s = (totalSeconds % 60).toString().padStart(2, '0');
+        el.innerText = `${m}:${s}`;
+      }, 1000);
+    });
+
+    // 2. 商品删除-移除Loading直接操作
+    itemDels.forEach(del => {
+      del.addEventListener('click', function() {
+        const parentItem = this.closest('.cart-item');
+        // 移除商品
+        parentItem.remove();
+        // 检查购物车是否为空
+        const remainingItems = document.querySelectorAll('.cart-item');
+        if (remainingItems.length === 0) {
+          cartList.style.display = 'none';
+          emptyCart.style.display = 'flex';
+          document.querySelector('.cart-select-all').style.display = 'none';
+        }
+      });
+    });
+
+    // 3. 全选/单选联动
+    checkboxes.forEach(box => {
+      box.addEventListener('click', () => {
+        box.classList.toggle('checked');
+        const isAllChecked = [...document.querySelectorAll('.cart-item .checkbox')].every(b => b.classList.contains('checked'));
+        allCheck.classList.toggle('checked', isAllChecked);
+        footerCheck.classList.toggle('checked', isAllChecked);
+      });
+    });
+    allCheck.addEventListener('click', () => {
+      const isChecked = allCheck.classList.contains('checked');
+      checkboxes.forEach(box => box.classList.toggle('checked', !isChecked));
+    });
+
+    // 4. 数量加减-定制商品最少1件
+    numBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = btn.parentElement.querySelector('.num-input');
+        let num = Number(input.value);
+        if (btn.textContent === '+') num++;
+        else num = num > 1 ? num - 1 : 1;
+        input.value = num;
+      });
+    });
+
+    // 5. 需求卡分享-弹窗显示/隐藏
+    shareBtn.addEventListener('click', () => {
+      shareModal.style.display = 'flex';
+    });
+    shareClose.addEventListener('click', () => {
+      shareModal.style.display = 'none';
+    });
+    // 点击弹窗外层关闭
+    shareModal.addEventListener('click', (e) => {
+      if (e.target === shareModal) shareModal.style.display = 'none';
+    });
+
+    // 6. 热门设定集一键加购-移除Loading直接操作
+    document.querySelectorAll('.set-item').forEach(item => {
+      item.addEventListener('click', () => {
+        emptyCart.style.display = 'none';
+        cartList.style.display = 'block';
+        document.querySelector('.cart-select-all').style.display = 'flex';
+      });
+    });
+
+    // 7. 导航跳转逻辑 - 跳回主页面
+    document.getElementById('back-to-goods').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
+
+    document.getElementById('back-to-about').addEventListener('click', function() {
+      window.location.href = 'index.html#about';
+    });
+
+    // 8. 外部跳转逻辑
+    document.getElementById('goto-course').addEventListener('click', function() {
+      window.location.href = 'course.html';
+    });
+
+    document.getElementById('goto-cart').addEventListener('click', function() {
+      // 已经在购物车页面，仅更新按钮状态
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  </script>
+</body>
+</html>
