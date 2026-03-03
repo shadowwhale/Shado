@@ -795,7 +795,7 @@
     </div>
 
     <script>
-        // 导航菜单激活状态切换 + 精准跳转逻辑
+        // 导航菜单激活状态切换和页面跳转
         const navItems = document.querySelectorAll('.nav-menu li');
         navItems.forEach(item => {
             item.addEventListener('click', () => {
@@ -804,21 +804,23 @@
                 // 为当前点击项添加激活状态
                 item.classList.add('active');
 
-                // 精准跳转逻辑
+                // 获取按钮文本（去除箭头符号）
                 const text = item.textContent.trim().replace(' ↗', '');
+                
+                // 根据按钮文本进行页面跳转
                 switch(text) {
                     case '关于影塑':
-                        window.location.href = 'index.html'; // 精准跳转到首页
+                        window.location.href = 'index.html';
                         break;
                     case '产品定制':
-                        window.location.href = 'custom.html'; // 精准跳转到产品定制页
+                        window.location.href = 'custom.html';
                         break;
                     case '教程中心':
-                        window.location.href = 'course.html'; // 精准跳转到教程中心页
+                        window.location.href = 'course.html';
                         break;
                     case '我的商品':
-                        // 可替换为我的商品实际页面链接，这里暂保留原有逻辑
-                        window.location.href = 'my-products.html';
+                        // 可替换为实际的我的商品页面链接
+                        window.location.href = 'cart.html';
                         break;
                 }
             });
