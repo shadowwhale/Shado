@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>影塑</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    body {
+      background: #fdf6fb; /* 浅粉紫背景 */
+      color: #333;
+    }
+
+    /* 顶部导航 */
+    header {
+      background: linear-gradient(90deg, #fffbe8 0%, #f9e8ff 100%); /* 粉紫渐变 */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #e374d8, #b842a8); /* 粉紫渐变 */
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 500px;
+      margin: 0 20px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      font-size: 14px;
+      background: #f9f9f9;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      border-color: #e374d8; /* 粉紫边框 */
+      background: white;
+    }
+
+    .login-btn {
+      color: #444;
+      font-size: 14px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .login-btn:hover {
+      color: #b842a8; /* 粉紫 hover */
+    }
+
+    .nav-tabs {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 12px 0;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .tab-btn.active,
+    .tab-btn:hover {
+      color: #b842a8; /* 粉紫激活色 */
+      font-weight: 500;
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #b842a8; /* 粉紫下划线 */
+    }
+
+    /* 内容区域 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.4s;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 首页 Banner */
+    .banner {
+      background: linear-gradient(135deg, #f9e8ff 0%, #f0e8ff 100%); /* 粉紫渐变 */
+      border-radius: 20px;
+      padding: 40px;
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .banner-text {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .banner h1 {
+      font-size: 36px;
+      color: #222;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    .banner-features {
+      display: flex;
+      gap: 24px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .feature-icon {
+      width: 20px;
+      height: 20px;
+      background: #b842a8; /* 粉紫图标背景 */
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .banner-btn {
+      background: #ffdd55;
+      color: #333;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 24px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .banner-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 221, 85, 0.4);
+    }
+
+    .banner-images {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .banner-card {
+      width: 120px;
+      height: 120px;
+      background: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .banner-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 瀑布流 */
+    .waterfall {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-info {
+      padding: 12px 15px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: #444;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-price {
+      color: #b842a8; /* 粉紫价格色 */
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    /* 购物车 */
+    .cart-page {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .cart-page h2 {
+      color: #b842a8; /* 粉紫标题色 */
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .cart-info {
+      flex: 1;
+    }
+
+    .cart-name {
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: #333;
+    }
+
+    .cart-price {
+      color: #b842a8; /* 粉紫价格色 */
+      font-weight: bold;
+    }
+
+    .cart-quantity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qty-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .total-section {
+      text-align: right;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 2px solid #f0f0f0;
+    }
+
+    .total-price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #b842a8; /* 粉紫总价色 */
+      margin-bottom: 16px;
+    }
+
+    .checkout-btn {
+      background: #b842a8; /* 粉紫按钮 */
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 24px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .checkout-btn:hover {
+      background: #9e368f; /* 深粉紫 hover */
+    }
+
+    /* 文字页面通用 */
+    .text-page {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      line-height: 1.8;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin: 20px 0;
+    }
+
+    .text-page h2 {
+      color: #b842a8; /* 粉紫标题色 */
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .text-page p {
+      margin-bottom: 16px;
+      color: #555;
+    }
+
+    .text-page ul {
+      padding-left: 20px;
+      color: #555;
+    }
+
+    .text-page li {
+      margin-bottom: 8px;
+    }
+
+    /* 底部信息 */
+    .info-bar {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 30px 20px;
+      background: #f9e8ff; /* 浅粉紫背景 */
+      border-radius: 16px;
+      margin: 40px 0;
+    }
+
+    .info-item {
+      text-align: center;
+      color: #444;
+    }
+
+    .info-icon {
+      width: 48px;
+      height: 48px;
+      background: #b842a8; /* 粉紫图标背景 */
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin: 0 auto 12px;
+    }
+
+    /* 右侧悬浮栏 */
+    .sidebar {
+      position: fixed;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 99;
+    }
+
+    .sidebar-item {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 20px;
+      cursor: pointer;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .sidebar-item:hover {
+      color: #b842a8; /* 粉紫 hover */
+    }
+
+    .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #ff4d4f;
+      color: white;
+      font-size: 10px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .header-top {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .search-bar {
+        order: 3;
+        flex: 100%;
+        margin: 0;
+      }
+      .nav-tabs {
+        gap: 20px;
+      }
+      .banner h1 {
+        font-size: 28px;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-icon">影</div>
+      <span>影塑</span>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="搜索你想要的商品">
+    </div>
+    <div class="login-btn">点击登录</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" data-page="goods">全部商品</button>
+    <button class="tab-btn" data-page="about">关于影塑</button>
+    <button class="tab-btn" data-page="course">教程中心</button>
+    <button class="tab-btn" data-page="cart">我的商品</button>
+  </div>
+</header>
+
+<div class="container">
+  <!-- 全部商品 -->
+  <div class="page active" id="goods">
+    <div class="banner">
+      <div class="banner-text">
+        <h1>专注一件起定的<br>柔性创作供应链</h1>
+        <div class="banner-features">
+          <div class="feature-item">
+            <div class="feature-icon">✓</div>
+            <span>一件起定</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✓</div>
+            <span>一件代发</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✓</div>
+            <span>自营工厂</span>
+          </div>
+        </div>
+        <button class="banner-btn">立即体验</button>
+      </div>
+      <div class="banner-images">
+        <div class="banner-card">
+          <img src="https://picsum.photos/seed/ys1/200/200" alt="商品示例">
+        </div>
+        <div class="banner-card">
+          <img src="https://picsum.photos/seed/ys2/200/200" alt="商品示例">
+        </div>
+        <div class="banner-card">
+          <img src="https://picsum.photos/seed/ys3/200/200" alt="商品示例">
+        </div>
+        <div class="banner-card">
+          <img src="https://picsum.photos/seed/ys4/200/200" alt="商品示例">
+        </div>
+      </div>
+    </div>
+
+    <div class="info-bar">
+      <div class="info-item">
+        <div class="info-icon">%</div>
+        <div>10件起折扣价</div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🏭</div>
+        <div>自营工厂</div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🚚</div>
+        <div>满¥99包邮</div>
+      </div>
+    </div>
+
+    <div class="waterfall">
+      <div class="card">
+        <img src="https://picsum.photos/seed/ys5/600/400" alt="影塑基础套装">
+        <div class="card-info">
+          <div class="card-title">影塑基础套装</div>
+          <div class="card-price">¥98</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/ys6/600/400" alt="光影雕刻工具">
+        <div class="card-info">
+          <div class="card-title">光影雕刻工具</div>
+          <div class="card-price">¥128</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/ys7/600/400" alt="彩色塑形材料">
+        <div class="card-info">
+          <div class="card-title">彩色塑形材料</div>
+          <div class="card-price">¥45</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/ys8/600/400" alt="专业展示底座">
+        <div class="card-info">
+          <div class="card-title">专业展示底座</div>
+          <div class="card-price">¥68</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/ys9/600/400" alt="迷你塑形灯">
+        <div class="card-info">
+          <div class="card-title">迷你塑形灯</div>
+          <div class="card-price">¥79</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/ys10/600/400" alt="高级创作礼盒">
+        <div class="card-info">
+          <div class="card-title">高级创作礼盒</div>
+          <div class="card-price">¥238</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关于影塑 -->
+  <div class="page" id="about">
+    <div class="text-page">
+      <h2>关于影塑</h2>
+      <p>影塑是一种结合光影、造型与创意手工的现代艺术形式，用简单材料创造出立体、梦幻的视觉效果。</p>
+      <p>我们致力于让每个人都能轻松上手，感受指尖创作的快乐，用光影与造型表达自我。</p>
+      <p>影塑不仅是手工，更是一种生活方式，让创意随时随地发生。</p>
+    </div>
+  </div>
+
+  <!-- 教程中心 -->
+  <div class="page" id="course">
+    <div class="text-page">
+      <h2>教程中心</h2>
+      <ul>
+        <li>新手入门：认识影塑工具与基础用法</li>
+        <li>基础造型：圆形、方形、渐变光影制作</li>
+        <li>进阶技巧：多层叠加与氛围营造</li>
+        <li>创意案例：人物、动物、场景完整教程</li>
+        <li>常见问题：材料保存、作品保养、故障排除</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 我的商品（购物车） -->
+  <div class="page" id="cart">
+    <div class="cart-page">
+      <h2>我的商品</h2>
+      <div class="cart-item">
+        <img src="https://picsum.photos/seed/ys5/600/400" alt="影塑基础套装">
+        <div class="cart-info">
+          <div class="cart-name">影塑基础套装</div>
+          <div class="cart-price">¥98</div>
+        </div>
+        <div class="cart-quantity">
+          <button class="qty-btn">-</button>
+          <span>1</span>
+          <button class="qty-btn">+</button>
+        </div>
+      </div>
+      <div class="cart-item">
+        <img src="https://picsum.photos/seed/ys7/600/400" alt="彩色塑形材料">
+        <div class="cart-info">
+          <div class="cart-name">彩色塑形材料</div>
+          <div class="cart-price">¥45</div>
+        </div>
+        <div class="cart-quantity">
+          <button class="qty-btn">-</button>
+          <span>2</span>
+          <button class="qty-btn">+</button>
+        </div>
+      </div>
+      <div class="total-section">
+        <div class="total-price">合计：¥188</div>
+        <button class="checkout-btn">结算</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sidebar">
+  <div class="sidebar-item">
+    🛒
+    <span class="badge">2</span>
+  </div>
+  <div class="sidebar-item">💬</div>
+  <div class="sidebar-item">✍️</div>
+  <div class="sidebar-item">👇</div>
+</div>
+
+<script>
+  // 切换页面
+  const btns = document.querySelectorAll('.tab-btn');
+  const pages = document.querySelectorAll('.page');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // 移除所有激活状态
+      btns.forEach(b => b.classList.remove('active'));
+      pages.forEach(p => p.classList.remove('active'));
+      // 激活当前页面
+      btn.classList.add('active');
+      const pageId = btn.dataset.page;
+      document.getElementById(pageId).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
