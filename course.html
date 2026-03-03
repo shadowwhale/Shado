@@ -46,16 +46,11 @@
       text-decoration: none;
     }
 
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #e374d8, #b842a8);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
+    /* 替换为新的Logo样式 */
+    .logo-img {
+      height: 60px; /* 调整Logo高度，保证显示效果 */
+      width: auto;  /* 宽度自适应，保持比例 */
+      display: block;
     }
 
     .login-btn {
@@ -267,6 +262,10 @@
         padding: 10px 16px;
         font-size: 14px;
       }
+      /* 移动端调整Logo大小 */
+      .logo-img {
+        height: 40px;
+      }
     }
   </style>
 </head>
@@ -274,10 +273,12 @@
 
 <header>
   <div class="header-top">
-    <!-- 点击Logo可返回首页 -->
+    <!-- 点击Logo可返回首页 - 替换为新图片Logo，移除文字 -->
     <a href="index.html" class="logo">
-      <div class="logo-icon">影</div>
-      <span>影塑</span>
+      <!-- 替换为你的Logo图片地址，这里先用你提供的图片链接示例 -->
+      <img src="https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/4a4ef6363015449d813ea8c29da460da.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=20260303225542028B3040AC8EBBAD8001&rrcfp=8a172a1a&x-expires=1773154543&x-signature=4RwkQE%2Bl98ZExgzy2%2BH50HWx7LE%3D"
+           alt="影塑Logo"
+           class="logo-img">
     </a>
     <div class="login-btn">点击登录</div>
   </div>
@@ -302,10 +303,10 @@
   <!-- 1. 编辑亚克力刀线 -->
   <div class="course-content active" id="acrylic">
     <h2 class="course-title">编辑亚克力刀线</h2>
-    
+
     <div class="section">
       <p>亚克力刀线是影塑制作中用于定义板材切割轮廓的关键路径。正确的刀线设置能确保成品边缘精准、契合度高。</p>
-      
+
       <h3>第一步：创建刀线图层</h3>
       <p>在你的设计软件（如AI、CDR）中，新建一个图层，命名为 <strong>【刀线】</strong>。该图层必须位于所有图案图层的最上方。</p>
 
@@ -331,10 +332,10 @@
   <!-- 2. 如何编辑白墨层 -->
   <div class="course-content" id="whiteink">
     <h2 class="course-title">如何编辑白墨层</h2>
-    
+
     <div class="section">
       <p>白墨层主要用于亚克力透明件的底色遮盖，或在深色材质上增加图案的鲜艳度。在影塑工艺中，白墨是作为独立的一层进行打印的。</p>
-      
+
       <h3>第一步：准备设计稿</h3>
       <p>完成彩色图案设计后，复制一份图案，专门用于制作白墨层。</p>
 
@@ -358,10 +359,10 @@
   <!-- 3. 出血线讲解 -->
   <div class="course-content" id="bleed">
     <h2 class="course-title">出血线讲解</h2>
-    
+
     <div class="section">
       <p>出血线（Bleed）是指印刷内容超出成品尺寸的部分。设置出血是为了避免裁切后露出白边，保证画面的完整性。</p>
-      
+
       <h3>什么是出血？</h3>
       <p>由于亚克力在裁切过程中会有微小的误差，若图案刚好在裁切线上，极有可能在成品边缘露出一条细细的白边。出血就是让图案“跑”出裁切范围，预留出容错空间。</p>
 
@@ -406,15 +407,15 @@
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const tabId = btn.dataset.tab;
-      
+
       // 移除所有激活状态
       tabBtns.forEach(b => b.classList.remove('active'));
       tabContents.forEach(c => c.classList.remove('active'));
-      
+
       // 激活当前
       btn.classList.add('active');
       document.getElementById(tabId).classList.add('active');
-      
+
       // 点击后滚动到顶部
       window.scrollTo({
         top: 0,
