@@ -50,25 +50,16 @@
       margin: 0 auto;
     }
 
+    /* 修改Logo样式 - 移除文字，只保留图片 */
     .logo {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 22px;
-      font-weight: bold;
-      color: #222;
+      gap: 0; /* 移除间距 */
     }
 
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--light-pink), var(--pink));
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
+    .logo-img {
+      height: 48px; /* 可根据需要调整Logo高度 */
+      width: auto; /* 保持宽高比 */
     }
 
     .search-bar {
@@ -581,6 +572,10 @@
       .sidebar {
         display: none;
       }
+      /* 移动端调整Logo大小 */
+      .logo-img {
+        height: 36px;
+      }
     }
     @media (max-width: 768px) {
       .header-top {
@@ -615,9 +610,11 @@
   <!-- 新样式导航栏 -->
   <header>
     <div class="header-top">
+      <!-- 替换为Logo图片，移除文字 -->
       <div class="logo">
-        <div class="logo-icon">影</div>
-        <span>影塑</span>
+        <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/8ab470c0077b4f27b0922c54bdc9a006.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=20260303225349D95661C1EF8CABDDBB41&rrcfp=8a172a1a&x-expires=1773154429&x-signature=%2B1vLtz5xgyEC%2BkGxX1RXTijPH8E%3D"
+             alt="影塑Logo"
+             class="logo-img">
       </div>
       <div class="search-bar">
         <input type="text" placeholder="搜索二次元定制商品">
