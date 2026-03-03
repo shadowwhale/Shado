@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影塑 - 产品定制</title>
+    <style>
+        /* 全局样式重置 - 沿用影塑设计规范 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        /* 页面主体 - 沿用影塑配色体系 */
+        body {
+            background: #fdf6fb;
+            color: #333;
+        }
+
+        /* 头部导航栏 - 替换为影塑渐变背景+阴影 */
+        header {
+            background: linear-gradient(90deg, #fffbe8 0%, #f9e8ff 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        /* Logo样式 - 沿用影塑设计 */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .logo-img {
+            height: 48px;
+            width: auto;
+        }
+
+        /* 搜索栏 - 沿用影塑样式 */
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 14px;
+            background: #f9f9f9;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #b842a8;
+            background: white;
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            font-size: 16px;
+        }
+
+        /* 登录按钮 - 沿用影塑配色 */
+        .login-btn {
+            color: #444;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        .login-btn:hover {
+            color: #b842a8;
+        }
+
+        /* 导航菜单 - 替换为影塑tab样式 */
+        .nav-menu {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 12px 0;
+            flex-wrap: wrap;
+            list-style: none;
+            border-bottom: none;
+        }
+
+        .nav-menu li {
+            color: #666;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 6px 0;
+            position: relative;
+            transition: color 0.3s;
+            margin: 0;
+        }
+
+        /* 跳转按钮特殊样式（加小箭头） */
+        .nav-menu li.jump-btn::after {
+            content: ' ↗';
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        .nav-menu li.active,
+        .nav-menu li:hover {
+            color: #b842a8;
+            font-weight: 500;
+        }
+
+        .nav-menu li.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #b842a8;
+        }
+
+        /* 覆盖跳转按钮的下划线 */
+        .nav-menu li.jump-btn.active::after {
+            content: ' ↗';
+            background: none;
+            width: auto;
+            height: auto;
+            font-size: 12px;
+            opacity: 1;
+        }
+
+        /* 商品分类区域 - 优化为影塑风格 */
+        .product-category {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .category-item {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .category-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .category-item p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 功能入口区域 - 替换为影塑风格 */
+        .function-area {
+            max-width: 1200px;
+            margin: 30px auto;
+            display: flex;
+            justify-content: space-around;
+            background: linear-gradient(135deg, #f9e8ff 0%, #f0e8ff 100%);
+            padding: 30px 0;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .function-item {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .function-item .icon {
+            width: 48px;
+            height: 48px;
+            background: #b842a8;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 12px;
+        }
+
+        .function-item p {
+            font-size: 14px;
+            color: #444;
+        }
+
+        .function-item p:last-child {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* 右侧工具栏 - 沿用影塑悬浮栏样式 */
+        .side-tool {
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 99;
+        }
+
+        .tool-item {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .tool-item:hover {
+            color: #b842a8;
+        }
+
+        /* 响应式适配 - 优化适配逻辑 */
+        @media (max-width: 1200px) {
+            .product-category {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .search-bar {
+                order: 3;
+                flex: 100%;
+                margin: 0;
+            }
+
+            .product-category {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-menu {
+                gap: 15px;
+            }
+
+            .nav-menu li {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+
+            .side-tool {
+                display: none;
+            }
+
+            .logo-img {
+                height: 36px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .function-area {
+                flex-wrap: wrap;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .function-item {
+                width: 45%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部区域 - 整合影塑Logo和布局 -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <!-- 替换为影塑Logo图片 -->
+                <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/8ab470c0077b4f27b0922c54bdc9a006.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=20260303225349D95661C1EF8CABDDBB41&rrcfp=8a172a1a&x-expires=1773154429&x-signature=%2B1vLtz5xgyEC%2BkGxX1RXTijPH8E%3D"
+                     alt="影塑Logo"
+                     class="logo-img">
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="搜索你想要的商品">
+                <button>🔍</button>
+            </div>
+            <a href="#" class="login-btn">点击登录</a>
+        </div>
+    </header>
+
+    <!-- 导航菜单 - 改造为影塑tab样式 -->
+    <ul class="nav-menu">
+        <li class="active">全部商品</li>
+        <li>关于我们</li>
+        <li class="jump-btn">教程中心</li>
+        <li class="jump-btn">模板库</li>
+        <li class="jump-btn">我的商品</li>
+        <li class="jump-btn">订单管理</li>
+        <li class="jump-btn">店铺管理</li>
+    </ul>
+
+    <!-- 商品分类展示 - 优化视觉风格 -->
+    <div class="product-category">
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=1" alt="新春制品">
+            <p>新春制品</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=2" alt="亚克力">
+            <p>亚克力</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=3" alt="吧唧徽章">
+            <p>吧唧徽章</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=4" alt="纸制品">
+            <p>纸制品</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=5" alt="木制品">
+            <p>木制品</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=6" alt="贴纸">
+            <p>贴纸</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=7" alt="色纸">
+            <p>色纸</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=8" alt="光栅">
+            <p>光栅</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=9" alt="PVC">
+            <p>PVC</p>
+        </div>
+        <div class="category-item">
+            <img src="https://picsum.photos/200/180?random=10" alt="纺织品">
+            <p>纺织品</p>
+        </div>
+    </div>
+
+    <!-- 功能入口区域 - 替换为影塑视觉风格 -->
+    <div class="function-area">
+        <div class="function-item">
+            <div class="icon">🎨</div>
+            <p>自定义商品</p>
+            <p>亚克力/木质/滴胶</p>
+        </div>
+        <div class="function-item">
+            <div class="icon">📋</div>
+            <p>模板库</p>
+            <p>超多模版任你选~</p>
+        </div>
+        <div class="function-item">
+            <div class="icon">📖</div>
+            <p>教程中心</p>
+            <p>做图/商品定制/开店</p>
+        </div>
+        <div class="function-item">
+            <div class="icon">🔧</div>
+            <p>工艺介绍</p>
+            <p>材质/印刷/切割/烫金</p>
+        </div>
+    </div>
+
+    <!-- 右侧工具栏 - 沿用影塑悬浮栏样式 -->
+    <div class="side-tool">
+        <div class="tool-item">🛒</div>
+        <div class="tool-item">💬</div>
+        <div class="tool-item">📝</div>
+        <div class="tool-item">📱</div>
+        <div class="tool-item">🍠</div>
+        <div class="tool-item">🎵</div>
+        <div class="tool-item">⋮</div>
+    </div>
+
+    <script>
+        // 导航菜单激活状态切换
+        const navItems = document.querySelectorAll('.nav-menu li');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // 移除所有激活状态
+                navItems.forEach(li => li.classList.remove('active'));
+                // 为当前点击项添加激活状态
+                item.classList.add('active');
+
+                // 跳转按钮的跳转逻辑（可根据实际需求修改）
+                if (item.classList.contains('jump-btn')) {
+                    const text = item.textContent.trim().replace(' ↗', '');
+                    switch(text) {
+                        case '教程中心':
+                            window.location.href = 'course.html';
+                            break;
+                        case '我的商品':
+                            window.location.href = 'cart.html';
+                            break;
+                        // 可添加其他跳转逻辑
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
