@@ -439,7 +439,7 @@
     </div>
     <div class="login-btn">点击登录</div>
   </div>
-  
+
   <!-- 恢复四个按钮，为跳转按钮添加 jump-btn 类 -->
   <div class="nav-tabs">
     <button class="tab-btn active" data-page="goods">全部商品</button>
@@ -450,7 +450,7 @@
 </header>
 
 <div class="container">
-  <!-- 1. 全部商品 (内部展示) -->
+  <!-- 1. 关于影塑 -->
   <div class="page active" id="goods">
     <div class="banner">
       <div class="banner-text">
@@ -534,17 +534,15 @@
     </div>
   </div>
 
-  <!-- 2. 关于影塑 (内部展示) -->
+  <!-- 2. 产品定制 -->
   <div class="page" id="about">
     <div class="text-page">
-      <h2>关于影塑</h2>
+      <h2>产品定制</h2>
       <p>影塑是一家专注于亚克力文创产品研发、生产与销售的创新型企业。我们依托自有工厂，打造了从创意设计到柔性生产的完整供应链。</p>
       <p>我们致力于打破传统制造业的批量限制，实现真正的“一件起定，一件代发”，让每一个创意都能快速落地为高品质的实物产品。</p>
       <p>无论是个人创作者、设计师，还是品牌方，影塑都能为您提供高性价比的定制解决方案。</p>
     </div>
   </div>
-
-  <!-- 注意：教程中心和我的商品的HTML内容已删除，改为外部跳转 -->
 </div>
 
 <div class="sidebar">
@@ -562,7 +560,7 @@
     btn.addEventListener('click', () => {
       // 重置所有按钮状态
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      
+
       // 激活当前按钮并显示页面
       btn.classList.add('active');
       const pageId = btn.dataset.page;
@@ -572,20 +570,15 @@
   });
 
   // 2. 处理外部跳转逻辑 (教程中心、我的商品)
-  
+
   // 教程中心跳转：指向之前创建的 course.html
   document.getElementById('goto-course').addEventListener('click', function() {
-    // 如果你上传了 course.html，路径就是 'course.html'
-    // 如果是线上地址，请替换为完整 URL，例如：'https://shadowwhale.github.io/Shado/course.html'
     window.location.href = 'course.html';
   });
 
-  // 我的商品跳转：请将 # 替换为你实际的购物车页面地址
+  // 我的商品跳转：跳转到购物车页面 cart.html
   document.getElementById('goto-cart').addEventListener('click', function() {
-    // 示例：跳转到购物车页面，目前用 # 占位
-    // window.location.href = 'cart.html'; 
-    window.location.href = '#';
-    alert('跳转到我的商品页面');
+    window.location.href = 'cart.html';
   });
 </script>
 
