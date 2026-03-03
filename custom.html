@@ -1,654 +1,429 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>影塑 - 产品定制</title>
-    <style>
-        /* 全局样式重置 - 沿用影塑设计规范 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>影塑 - 教程中心</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
 
-        /* 页面主体 - 沿用影塑配色体系 */
-        body {
-            background: #fdf6fb;
-            color: #333;
-        }
+    body {
+      background: #fdf6fb;
+      color: #333;
+      line-height: 1.8;
+    }
 
-        /* 头部导航栏 - 替换为影塑渐变背景+阴影 */
-        header {
-            background: linear-gradient(90deg, #fffbe8 0%, #f9e8ff 100%);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
+    /* 顶部导航 - 统一首页样式 */
+    header {
+      background: linear-gradient(90deg, #fffbe8 0%, #f9e8ff 100%);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
 
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 20px;
-        }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-        /* Logo样式 - 沿用影塑设计 */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #222;
-        }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #222;
+      text-decoration: none;
+    }
 
-        .logo-img {
-            height: 48px;
-            width: auto;
-        }
+    /* 替换为新的Logo样式 */
+    .logo-img {
+      height: 60px; /* 调整Logo高度，保证显示效果 */
+      width: auto;  /* 宽度自适应，保持比例 */
+      display: block;
+    }
 
-        /* 搜索栏 - 沿用影塑样式 */
-        .search-bar {
-            flex: 1;
-            max-width: 500px;
-            margin: 0 20px;
-            position: relative;
-        }
+    .login-btn {
+      color: #444;
+      font-size: 14px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
 
-        .search-bar input {
-            width: 100%;
-            padding: 10px 16px;
-            border: 1px solid #e0e0e0;
-            border-radius: 20px;
-            font-size: 14px;
-            background: #f9f9f9;
-        }
+    .login-btn:hover {
+      color: #b842a8;
+    }
 
-        .search-bar input:focus {
-            outline: none;
-            border-color: #b842a8;
-            background: white;
-        }
+    /* 主导航标签栏 - 统一首页样式 */
+    .nav-tabs {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 12px 0;
+      flex-wrap: wrap;
+    }
 
-        .search-bar button {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #999;
-            font-size: 16px;
-        }
+    .tab-btn-main {
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.3s;
+    }
 
-        /* 登录按钮 - 沿用影塑配色 */
-        .login-btn {
-            color: #444;
-            font-size: 14px;
-            cursor: pointer;
-            transition: color 0.3s;
-            text-decoration: none;
-        }
+    /* 跳转按钮的特殊样式（加小箭头） */
+    .jump-btn::after {
+      content: ' ↗';
+      font-size: 12px;
+      opacity: 0.6;
+    }
 
-        .login-btn:hover {
-            color: #b842a8;
-        }
+    .tab-btn-main.active,
+    .tab-btn-main:hover {
+      color: #b842a8;
+      font-weight: 500;
+    }
 
-        /* 导航菜单 - 替换为影塑tab样式 */
-        .nav-menu {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            padding: 12px 0;
-            flex-wrap: wrap;
-            list-style: none;
-            border-bottom: none;
-        }
+    .tab-btn-main.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #b842a8;
+    }
 
-        .nav-menu li {
-            color: #666;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 6px 0;
-            position: relative;
-            transition: color 0.3s;
-            margin: 0;
-            /* 修改为按钮样式 */
-            background: none;
-            border: none;
-            font-family: inherit;
-        }
+    /* 覆盖跳转按钮的下划线，避免和箭头冲突 */
+    .jump-btn.active::after {
+      content: ' ↗';
+      background: none;
+      width: auto;
+      height: auto;
+      font-size: 12px;
+      opacity: 1;
+    }
 
-        /* 跳转按钮特殊样式（加小箭头） */
-        .nav-menu li.jump-btn::after {
-            content: ' ↗';
-            font-size: 12px;
-            opacity: 0.6;
-        }
+    /* 教程子导航 Tabs */
+    .course-tabs {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 12px;
+      border-bottom: 2px solid #f0e0f5;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
 
-        .nav-menu li.active,
-        .nav-menu li:hover {
-            color: #b842a8;
-            font-weight: 500;
-        }
+    .course-tabs::-webkit-scrollbar {
+      display: none;
+    }
 
-        .nav-menu li.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #b842a8;
-        }
+    .tab-btn-sub {
+      background: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px 8px 0 0;
+      font-size: 16px;
+      cursor: pointer;
+      flex-shrink: 0;
+      color: #888;
+      transition: all 0.3s;
+    }
 
-        /* 覆盖跳转按钮的下划线 */
-        .nav-menu li.jump-btn.active::after {
-            content: ' ↗';
-            background: none;
-            width: auto;
-            height: auto;
-            font-size: 12px;
-            opacity: 1;
-        }
+    .tab-btn-sub.active {
+      background: #b842a8;
+      color: white;
+      font-weight: 500;
+    }
 
-        /* 商品分类区域 - 优化为影塑风格 */
-        .product-category {
-            max-width: 1200px;
-            margin: 20px auto;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            padding: 0 20px;
-        }
+    /* 内容容器 - 统一样式 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+    }
 
-        .category-item {
-            background: white;
-            border-radius: 16px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+    .course-content {
+      display: none;
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      animation: fadeIn 0.4s;
+    }
 
-        .category-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
+    .course-content.active {
+      display: block;
+    }
 
-        .category-item img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .category-item p {
-            font-size: 14px;
-            color: #666;
-        }
+    /* 教程内容样式 - 优化配色和样式 */
+    .course-title {
+      color: #b842a8;
+      font-size: 28px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #f0e0f5;
+    }
 
-        /* 功能入口区域 - 替换为影塑风格 */
-        .function-area {
-            max-width: 1200px;
-            margin: 30px auto;
-            display: flex;
-            justify-content: space-around;
-            background: linear-gradient(135deg, #f9e8ff 0%, #f0e8ff 100%);
-            padding: 30px 0;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
+    .section {
+      margin-bottom: 40px;
+    }
 
-        .function-item {
-            text-align: center;
-            cursor: pointer;
-        }
+    .section h3 {
+      font-size: 20px;
+      color: #9a368f;
+      margin: 25px 0 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .function-item .icon {
-            width: 48px;
-            height: 48px;
-            background: #b842a8;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin: 0 auto 12px;
-        }
+    .section h3::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 20px;
+      background: #e374d8;
+      border-radius: 2px;
+    }
 
-        .function-item p {
-            font-size: 14px;
-            color: #444;
-        }
+    .section p {
+      color: #555;
+      margin-bottom: 15px;
+    }
 
-        .function-item p:last-child {
-            font-size: 12px;
-            color: #666;
-            margin-top: 4px;
-        }
+    .tip-box {
+      background: #fef0f8;
+      border-left: 4px solid #e374d8;
+      padding: 15px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+      color: #666;
+    }
 
-        /* 右侧工具栏 - 沿用影塑悬浮栏样式 */
-        .side-tool {
-            position: fixed;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            z-index: 99;
-        }
+    /* 图片样式 */
+    .tutorial-img {
+      width: 100%;
+      border-radius: 12px;
+      margin: 20px 0;
+      border: 1px solid #f0e0f5;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
 
-        .tool-item {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: #666;
-            transition: color 0.3s;
-        }
+    .img-caption {
+      text-align: center;
+      color: #999;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
 
-        .tool-item:hover {
-            color: #b842a8;
-        }
-
-        /* 商品弹窗样式 */
-        .product-modal {
-            position: fixed;
-            right: 0;
-            top: 0;
-            width: 400px;
-            height: 100vh;
-            background: white;
-            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
-            z-index: 1000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .product-modal.active {
-            transform: translateX(0);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .modal-close:hover {
-            color: #b842a8;
-        }
-
-        .modal-content {
-            margin-top: 40px;
-        }
-
-        .modal-product-img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .modal-product-title {
-            font-size: 20px;
-            color: #222;
-            margin-bottom: 10px;
-        }
-
-        .modal-product-price {
-            font-size: 24px;
-            color: #b842a8;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .modal-product-desc {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .modal-add-cart {
-            width: 100%;
-            padding: 12px;
-            background: #b842a8;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .modal-add-cart:hover {
-            background: #9a368c;
-        }
-
-        /* 遮罩层 */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.3);
-            z-index: 999;
-            display: none;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        /* 响应式适配 - 优化适配逻辑 */
-        @media (max-width: 1200px) {
-            .product-category {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-container {
-                flex-wrap: wrap;
-                gap: 12px;
-            }
-
-            .search-bar {
-                order: 3;
-                flex: 100%;
-                margin: 0;
-            }
-
-            .product-category {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .nav-menu {
-                gap: 15px;
-            }
-
-            .nav-menu li {
-                font-size: 14px;
-                margin-bottom: 10px;
-            }
-
-            .side-tool {
-                display: none;
-            }
-
-            .logo-img {
-                height: 36px;
-            }
-
-            /* 移动端弹窗适配 */
-            .product-modal {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 375px) {
-            .function-area {
-                flex-wrap: wrap;
-                gap: 20px;
-                padding: 20px;
-            }
-
-            .function-item {
-                width: 45%;
-            }
-        }
-    </style>
+    /* 响应式适配 - 统一首页的响应式逻辑 */
+    @media (max-width: 768px) {
+      .header-top {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .nav-tabs {
+        gap: 15px;
+      }
+      .tab-btn-main {
+        font-size: 14px;
+      }
+      .course-content {
+        padding: 20px 15px;
+      }
+      .course-title {
+        font-size: 24px;
+      }
+      .tab-btn-sub {
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+      /* 移动端调整Logo大小 */
+      .logo-img {
+        height: 40px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- 头部区域 - 整合影塑Logo和布局 -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <!-- 替换为影塑Logo图片 -->
-                <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/8ab470c0077b4f27b0922c54bdc9a006.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=20260303225349D95661C1EF8CABDDBB41&rrcfp=8a172a1a&x-expires=1773154429&x-signature=%2B1vLtz5xgyEC%2BkGxX1RXTijPH8E%3D"
-                     alt="影塑Logo"
-                     class="logo-img">
-            </div>
-            <div class="search-bar">
-                <input type="text" placeholder="搜索你想要的商品">
-                <button>🔍</button>
-            </div>
-            <a href="#" class="login-btn">点击登录</a>
-        </div>
-    </header>
 
-    <!-- 导航菜单 - 修正默认激活状态为产品定制 -->
-    <ul class="nav-menu">
-        <li id="about-ys">关于影塑</li>
-        <li class="active jump-btn" id="goto-custom">产品定制</li>
-        <li class="jump-btn" id="goto-course">教程中心</li>
-        <li class="jump-btn" id="goto-cart">我的商品</li>
-    </ul>
+<header>
+  <div class="header-top">
+    <!-- 点击Logo可返回首页 - 替换为新图片Logo，移除文字 -->
+    <a href="index.html" class="logo">
+      <!-- 替换为你的Logo图片地址，这里先用你提供的图片链接示例 -->
+      <img src="https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/4a4ef6363015449d813ea8c29da460da.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=20260303225542028B3040AC8EBBAD8001&rrcfp=8a172a1a&x-expires=1773154543&x-signature=4RwkQE%2Bl98ZExgzy2%2BH50HWx7LE%3D"
+           alt="影塑Logo"
+           class="logo-img">
+    </a>
+    <div class="login-btn">点击登录</div>
+  </div>
 
-    <!-- 商品分类展示 - 优化视觉风格，为新春制品添加ID -->
-    <div class="product-category">
-        <div class="category-item" id="spring-products" data-name="新春制品" data-price="¥98" data-desc="新春主题定制制品，包含春联、福字、挂件等多种款式，支持个性化定制。">
-            <img src="https://picsum.photos/200/180?random=1" alt="新春制品">
-            <p>新春制品</p>
-        </div>
-        <div class="category-item" data-name="亚克力" data-price="¥45" data-desc="高品质亚克力材质制品，透明度高，耐用性强，支持各种形状和图案定制。">
-            <img src="https://picsum.photos/200/180?random=2" alt="亚克力">
-            <p>亚克力</p>
-        </div>
-        <div class="category-item" data-name="吧唧徽章" data-price="¥15" data-desc="金属徽章定制，多种工艺可选，包括烤漆、珐琅、印刷等，支持异形定制。">
-            <img src="https://picsum.photos/200/180?random=3" alt="吧唧徽章">
-            <p>吧唧徽章</p>
-        </div>
-        <div class="category-item" data-name="纸制品" data-price="¥8" data-desc="各类纸质制品定制，包括明信片、书签、笔记本等，多种纸张材质可选。">
-            <img src="https://picsum.photos/200/180?random=4" alt="纸制品">
-            <p>纸制品</p>
-        </div>
-        <div class="category-item" data-name="木制品" data-price="¥68" data-desc="实木材质定制制品，环保自然，支持雕刻、印刷等多种工艺。">
-            <img src="https://picsum.photos/200/180?random=5" alt="木制品">
-            <p>木制品</p>
-        </div>
-        <div class="category-item" data-name="贴纸" data-price="¥5" data-desc="各类不干胶贴纸定制，防水防油，多种材质可选，支持异形模切。">
-            <img src="https://picsum.photos/200/180?random=6" alt="贴纸">
-            <p>贴纸</p>
-        </div>
-        <div class="category-item" data-name="色纸" data-price="¥25" data-desc="高品质色纸定制，色彩还原度高，适合签名、印刷等用途。">
-            <img src="https://picsum.photos/200/180?random=7" alt="色纸">
-            <p>色纸</p>
-        </div>
-        <div class="category-item" data-name="光栅" data-price="¥38" data-desc="3D光栅效果制品，视觉效果独特，支持定制图案和尺寸。">
-            <img src="https://picsum.photos/200/180?random=8" alt="光栅">
-            <p>光栅</p>
-        </div>
-        <div class="category-item" data-name="PVC" data-price="¥22" data-desc="PVC材质制品，防水耐用，适合钥匙扣、立牌等多种用途。">
-            <img src="https://picsum.photos/200/180?random=9" alt="PVC">
-            <p>PVC</p>
-        </div>
-        <div class="category-item" data-name="纺织品" data-price="¥58" data-desc="各类纺织品定制，包括抱枕、T恤、帆布袋等，支持印花、刺绣工艺。">
-            <img src="https://picsum.photos/200/180?random=10" alt="纺织品">
-            <p>纺织品</p>
-        </div>
+  <!-- 统一的主导航栏 -->
+  <div class="nav-tabs">
+    <button class="tab-btn-main" id="back-home">关于影塑</button>
+    <button class="tab-btn-main" id="goto-about">产品定制</button>
+    <button class="tab-btn-main jump-btn active">教程中心</button>
+    <button class="tab-btn-main jump-btn" id="goto-cart">我的商品</button>
+  </div>
+</header>
+
+<!-- 教程子切换标签 -->
+<div class="course-tabs">
+  <button class="tab-btn-sub active" data-tab="acrylic">编辑亚克力刀线</button>
+  <button class="tab-btn-sub" data-tab="whiteink">编辑白墨层</button>
+  <button class="tab-btn-sub" data-tab="bleed">出血线讲解</button>
+</div>
+
+<div class="container">
+  <!-- 1. 编辑亚克力刀线 -->
+  <div class="course-content active" id="acrylic">
+    <h2 class="course-title">编辑亚克力刀线</h2>
+
+    <div class="section">
+      <p>亚克力刀线是影塑制作中用于定义板材切割轮廓的关键路径。正确的刀线设置能确保成品边缘精准、契合度高。</p>
+
+      <h3>第一步：创建刀线图层</h3>
+      <p>在你的设计软件（如AI、CDR）中，新建一个图层，命名为 <strong>【刀线】</strong>。该图层必须位于所有图案图层的最上方。</p>
+
+      <h3>第二步：绘制路径</h3>
+      <p>使用钢笔工具或形状工具，沿着你想要切割的轮廓绘制闭合路径。</p>
+      <img src="https://picsum.photos/seed/knife1/1200/400" alt="绘制刀线路径示意图" class="tutorial-img">
+      <div class="img-caption">图1：红色路径即为绘制好的亚克力刀线</div>
+
+      <h3>第三步：设置刀线属性</h3>
+      <p>这是最关键的一步，请严格按照以下参数设置：</p>
+      <ul style="padding-left: 20px; color: #555; margin-bottom: 15px;">
+        <li><strong>颜色</strong>：纯红色 (C:0 M:100 Y:100 K:0)</li>
+        <li><strong>描边</strong>：1px 实色描边</li>
+        <li><strong>填充</strong>：无填充</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>⚠️ 重要提示：</strong> 刀线绝对不能有填充色，否则机器会识别为印刷内容而非切割指令。
+      </div>
     </div>
+  </div>
 
-    <!-- 功能入口区域 - 替换为影塑视觉风格 -->
-    <div class="function-area">
-        <div class="function-item">
-            <div class="icon">🎨</div>
-            <p>自定义商品</p>
-            <p>亚克力/木质/滴胶</p>
-        </div>
-        <div class="function-item">
-            <div class="icon">📋</div>
-            <p>模板库</p>
-            <p>超多模版任你选~</p>
-        </div>
-        <div class="function-item">
-            <div class="icon">📖</div>
-            <p>教程中心</p>
-            <p>做图/商品定制/开店</p>
-        </div>
-        <div class="function-item">
-            <div class="icon">🔧</div>
-            <p>工艺介绍</p>
-            <p>材质/印刷/切割/烫金</p>
-        </div>
+  <!-- 2. 如何编辑白墨层 -->
+  <div class="course-content" id="whiteink">
+    <h2 class="course-title">如何编辑白墨层</h2>
+
+    <div class="section">
+      <p>白墨层主要用于亚克力透明件的底色遮盖，或在深色材质上增加图案的鲜艳度。在影塑工艺中，白墨是作为独立的一层进行打印的。</p>
+
+      <h3>第一步：准备设计稿</h3>
+      <p>完成彩色图案设计后，复制一份图案，专门用于制作白墨层。</p>
+
+      <h3>第二步：创建白墨图层</h3>
+      <p>新建图层，命名为 <strong>【白墨】</strong>，将其放置在彩色图案图层的下方，刀线图层的下方。</p>
+
+      <h3>第三步：填充与调整</h3>
+      <p>将复制的图案填充为<strong>纯白色</strong>。根据设计需求，你可以适当对形状进行扩展，以确保彩色油墨完全被白墨覆盖，不会透出底色。</p>
+      <img src="https://picsum.photos/seed/ink1/1200/400" alt="白墨层与彩色层对比图" class="tutorial-img">
+      <div class="img-caption">图2：上图为彩色效果图，下图为对应的白墨层（灰色模拟显示）</div>
+
+      <h3>第四步：叠印设置</h3>
+      <p>在导出前，需将白墨层设置为<strong>叠印填充</strong>，避免出现漏白现象。</p>
+
+      <div class="tip-box">
+        <strong>💡 小技巧：</strong> 如果是文字内容，白墨层建议比彩色层大 0.5mm-1mm，这样能让文字边缘更清晰锐利。
+      </div>
     </div>
+  </div>
 
-    <!-- 右侧工具栏 - 沿用影塑悬浮栏样式 -->
-    <div class="side-tool">
-        <div class="tool-item">🛒</div>
-        <div class="tool-item">💬</div>
-        <div class="tool-item">📝</div>
-        <div class="tool-item">📱</div>
-        <div class="tool-item">🍠</div>
-        <div class="tool-item">🎵</div>
-        <div class="tool-item">⋮</div>
+  <!-- 3. 出血线讲解 -->
+  <div class="course-content" id="bleed">
+    <h2 class="course-title">出血线讲解</h2>
+
+    <div class="section">
+      <p>出血线（Bleed）是指印刷内容超出成品尺寸的部分。设置出血是为了避免裁切后露出白边，保证画面的完整性。</p>
+
+      <h3>什么是出血？</h3>
+      <p>由于亚克力在裁切过程中会有微小的误差，若图案刚好在裁切线上，极有可能在成品边缘露出一条细细的白边。出血就是让图案“跑”出裁切范围，预留出容错空间。</p>
+
+      <h3>标准出血尺寸</h3>
+      <p>影塑产品的标准出血尺寸为 <strong>3mm</strong>。</p>
+      <ul style="padding-left: 20px; color: #555; margin-bottom: 15px;">
+        <li>成品尺寸：你的最终产品大小（如 100mm x 100mm）</li>
+        <li>文档尺寸：成品尺寸 + 出血（如 106mm x 106mm）</li>
+      </ul>
+
+      <h3>如何制作出血？</h3>
+      <p>将背景图、色块或边缘的图案，向外侧延伸 3mm。确保延伸后的图案内容不影响主体视觉效果。</p>
+      <img src="https://picsum.photos/seed/bleed1/1200/400" alt="出血线示意图" class="tutorial-img">
+      <div class="img-caption">图3：红色线为裁切刀线，刀线外的蓝色区域即为出血部分</div>
+
+      <div class="tip-box">
+        <strong>⚠️ 注意：</strong> 重要的文字和LOGO请不要放在离刀线 5mm 以内的区域，以免在裁切时被切掉。
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- 商品弹窗 -->
-    <div class="product-modal" id="productModal">
-        <button class="modal-close" id="modalClose">×</button>
-        <div class="modal-content">
-            <img src="" alt="" class="modal-product-img" id="modalProductImg">
-            <h3 class="modal-product-title" id="modalProductTitle"></h3>
-            <div class="modal-product-price" id="modalProductPrice"></div>
-            <p class="modal-product-desc" id="modalProductDesc"></p>
-            <button class="modal-add-cart">加入购物车</button>
-        </div>
-    </div>
+<script>
+  // 主导航按钮跳转逻辑
+  document.getElementById('back-home').addEventListener('click', function() {
+    window.location.href = 'index.html';
+  });
 
-    <!-- 遮罩层 -->
-    <div class="overlay" id="overlay"></div>
+  // 新增：产品定制按钮跳转至custom.html
+  document.getElementById('goto-about').addEventListener('click', function() {
+    window.location.href = 'custom.html';
+  });
 
-    <script>
-        // 1. 导航菜单激活状态切换
-        const navItems = document.querySelectorAll('.nav-menu li');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // 移除所有激活状态
-                navItems.forEach(li => li.classList.remove('active'));
-                // 为当前点击项添加激活状态
-                item.classList.add('active');
-            });
-        });
+  document.getElementById('goto-cart').addEventListener('click', function() {
+    window.location.href = 'cart.html';
+  });
 
-        // 2. 处理导航跳转逻辑
-        // 关于影塑跳转 - 修改为跳转到index.html
-        document.getElementById('about-ys').addEventListener('click', function() {
-            window.location.href = 'index.html';
-        });
+  // 教程子标签切换逻辑
+  const tabBtns = document.querySelectorAll('.tab-btn-sub');
+  const tabContents = document.querySelectorAll('.course-content');
 
-        // 产品定制跳转 - 当前页面已是custom.html，点击时不跳转，仅保持激活状态
-        document.getElementById('goto-custom').addEventListener('click', function(e) {
-            e.preventDefault();
-            // 保持激活状态即可，不需要跳转
-        });
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.dataset.tab;
 
-        // 教程中心跳转
-        document.getElementById('goto-course').addEventListener('click', function() {
-            window.location.href = 'course.html';
-        });
+      // 移除所有激活状态
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
 
-        // 我的商品跳转
-        document.getElementById('goto-cart').addEventListener('click', function() {
-            window.location.href = 'cart.html';
-        });
-        
-        // 移除了无效的back-to-goods元素绑定（原代码中无此元素）
-        // 3. 处理新春制品的跳转逻辑
-        document.getElementById('spring-products').addEventListener('click', function(e) {
-            // 阻止事件冒泡，避免触发其他事件
-            e.stopPropagation();
-            // 跳转到指定页面
-            window.location.href = 'acrylic-card.html';
-        });
+      // 激活当前
+      btn.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
 
-        // 4. 其他商品点击弹窗功能
-        const categoryItems = document.querySelectorAll('.category-item:not(#spring-products)');
-        const productModal = document.getElementById('productModal');
-        const overlay = document.getElementById('overlay');
-        const modalClose = document.getElementById('modalClose');
-        const modalProductImg = document.getElementById('modalProductImg');
-        const modalProductTitle = document.getElementById('modalProductTitle');
-        const modalProductPrice = document.getElementById('modalProductPrice');
-        const modalProductDesc = document.getElementById('modalProductDesc');
+      // 点击后滚动到顶部
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  });
+</script>
 
-        // 商品项点击事件（排除新春制品）
-        categoryItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                // 阻止事件冒泡，避免触发导航跳转
-                e.stopPropagation();
-                
-                // 获取商品信息
-                const imgSrc = this.querySelector('img').src;
-                const name = this.dataset.name;
-                const price = this.dataset.price;
-                const desc = this.dataset.desc;
-
-                // 设置弹窗内容
-                modalProductImg.src = imgSrc;
-                modalProductImg.alt = name;
-                modalProductTitle.textContent = name;
-                modalProductPrice.textContent = price;
-                modalProductDesc.textContent = desc;
-
-                // 显示弹窗和遮罩
-                productModal.classList.add('active');
-                overlay.classList.add('active');
-                
-                // 禁止页面滚动
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
-        // 关闭弹窗
-        function closeModal() {
-            productModal.classList.remove('active');
-            overlay.classList.remove('active');
-            // 恢复页面滚动
-            document.body.style.overflow = '';
-        }
-
-        modalClose.addEventListener('click', closeModal);
-        overlay.addEventListener('click', closeModal);
-
-        // 按ESC键关闭弹窗
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-    </script>
 </body>
 </html>
