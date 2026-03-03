@@ -121,6 +121,10 @@
             position: relative;
             transition: color 0.3s;
             margin: 0;
+            /* 修改为按钮样式 */
+            background: none;
+            border: none;
+            font-family: inherit;
         }
 
         /* 跳转按钮特殊样式（加小箭头） */
@@ -270,6 +274,104 @@
             color: #b842a8;
         }
 
+        /* 商品弹窗样式 */
+        .product-modal {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .product-modal.active {
+            transform: translateX(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-close:hover {
+            color: #b842a8;
+        }
+
+        .modal-content {
+            margin-top: 40px;
+        }
+
+        .modal-product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .modal-product-title {
+            font-size: 20px;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .modal-product-price {
+            font-size: 24px;
+            color: #b842a8;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .modal-product-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .modal-add-cart {
+            width: 100%;
+            padding: 12px;
+            background: #b842a8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-add-cart:hover {
+            background: #9a368c;
+        }
+
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
         /* 响应式适配 - 优化适配逻辑 */
         @media (max-width: 1200px) {
             .product-category {
@@ -309,6 +411,11 @@
             .logo-img {
                 height: 36px;
             }
+
+            /* 移动端弹窗适配 */
+            .product-modal {
+                width: 100%;
+            }
         }
 
         @media (max-width: 375px) {
@@ -342,53 +449,53 @@
         </div>
     </header>
 
-    <!-- 导航菜单 - 修改为指定的4个按键 -->
+    <!-- 导航菜单 - 修正默认激活状态为产品定制 -->
     <ul class="nav-menu">
-        <li class="active">关于影塑</li>
-        <li>产品定制</li>
-        <li class="jump-btn">教程中心</li>
-        <li class="jump-btn">我的商品</li>
+        <li id="about-ys">关于影塑</li>
+        <li class="active jump-btn" id="goto-custom">产品定制</li>
+        <li class="jump-btn" id="goto-course">教程中心</li>
+        <li class="jump-btn" id="goto-cart">我的商品</li>
     </ul>
 
-    <!-- 商品分类展示 - 优化视觉风格 -->
+    <!-- 商品分类展示 - 优化视觉风格，为新春制品添加ID -->
     <div class="product-category">
-        <div class="category-item">
+        <div class="category-item" id="spring-products" data-name="新春制品" data-price="¥98" data-desc="新春主题定制制品，包含春联、福字、挂件等多种款式，支持个性化定制。">
             <img src="https://picsum.photos/200/180?random=1" alt="新春制品">
             <p>新春制品</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="亚克力" data-price="¥45" data-desc="高品质亚克力材质制品，透明度高，耐用性强，支持各种形状和图案定制。">
             <img src="https://picsum.photos/200/180?random=2" alt="亚克力">
             <p>亚克力</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="吧唧徽章" data-price="¥15" data-desc="金属徽章定制，多种工艺可选，包括烤漆、珐琅、印刷等，支持异形定制。">
             <img src="https://picsum.photos/200/180?random=3" alt="吧唧徽章">
             <p>吧唧徽章</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="纸制品" data-price="¥8" data-desc="各类纸质制品定制，包括明信片、书签、笔记本等，多种纸张材质可选。">
             <img src="https://picsum.photos/200/180?random=4" alt="纸制品">
             <p>纸制品</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="木制品" data-price="¥68" data-desc="实木材质定制制品，环保自然，支持雕刻、印刷等多种工艺。">
             <img src="https://picsum.photos/200/180?random=5" alt="木制品">
             <p>木制品</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="贴纸" data-price="¥5" data-desc="各类不干胶贴纸定制，防水防油，多种材质可选，支持异形模切。">
             <img src="https://picsum.photos/200/180?random=6" alt="贴纸">
             <p>贴纸</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="色纸" data-price="¥25" data-desc="高品质色纸定制，色彩还原度高，适合签名、印刷等用途。">
             <img src="https://picsum.photos/200/180?random=7" alt="色纸">
             <p>色纸</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="光栅" data-price="¥38" data-desc="3D光栅效果制品，视觉效果独特，支持定制图案和尺寸。">
             <img src="https://picsum.photos/200/180?random=8" alt="光栅">
             <p>光栅</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="PVC" data-price="¥22" data-desc="PVC材质制品，防水耐用，适合钥匙扣、立牌等多种用途。">
             <img src="https://picsum.photos/200/180?random=9" alt="PVC">
             <p>PVC</p>
         </div>
-        <div class="category-item">
+        <div class="category-item" data-name="纺织品" data-price="¥58" data-desc="各类纺织品定制，包括抱枕、T恤、帆布袋等，支持印花、刺绣工艺。">
             <img src="https://picsum.photos/200/180?random=10" alt="纺织品">
             <p>纺织品</p>
         </div>
@@ -429,8 +536,23 @@
         <div class="tool-item">⋮</div>
     </div>
 
+    <!-- 商品弹窗 -->
+    <div class="product-modal" id="productModal">
+        <button class="modal-close" id="modalClose">×</button>
+        <div class="modal-content">
+            <img src="" alt="" class="modal-product-img" id="modalProductImg">
+            <h3 class="modal-product-title" id="modalProductTitle"></h3>
+            <div class="modal-product-price" id="modalProductPrice"></div>
+            <p class="modal-product-desc" id="modalProductDesc"></p>
+            <button class="modal-add-cart">加入购物车</button>
+        </div>
+    </div>
+
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+
     <script>
-        // 导航菜单激活状态切换
+        // 1. 导航菜单激活状态切换
         const navItems = document.querySelectorAll('.nav-menu li');
         navItems.forEach(item => {
             item.addEventListener('click', () => {
@@ -438,25 +560,93 @@
                 navItems.forEach(li => li.classList.remove('active'));
                 // 为当前点击项添加激活状态
                 item.classList.add('active');
-
-                // 跳转按钮的跳转逻辑（可根据实际需求修改）
-                if (item.classList.contains('jump-btn')) {
-                    const text = item.textContent.trim().replace(' ↗', '');
-                    switch(text) {
-                        case '教程中心':
-                            window.location.href = 'course.html';
-                            break;
-                        case '我的商品':
-                            window.location.href = 'cart.html';
-                            break;
-                            当点击任意一样商品时,右侧方弹出弹窗（模仿图片中的样式）。
-case '新春制品':
-                            window.location.href = 'acrylic-card.html';
-                            break;
-                        // 可添加其他跳转逻辑
-                    }
-                }
             });
+        });
+
+        // 2. 处理导航跳转逻辑
+        // 关于影塑跳转（可根据实际需求修改地址）
+        document.getElementById('about-ys').addEventListener('click', function() {
+            window.location.href = 'about.html';
+        });
+
+        // 产品定制跳转 - 当前页面已是custom.html，点击时不跳转，仅保持激活状态
+        document.getElementById('goto-custom').addEventListener('click', function(e) {
+            e.preventDefault();
+            // 保持激活状态即可，不需要跳转
+        });
+
+        // 教程中心跳转
+        document.getElementById('goto-course').addEventListener('click', function() {
+            window.location.href = 'course.html';
+        });
+
+        // 我的商品跳转
+        document.getElementById('goto-cart').addEventListener('click', function() {
+            window.location.href = 'cart.html';
+        });
+
+        // 3. 处理新春制品的跳转逻辑
+        document.getElementById('spring-products').addEventListener('click', function(e) {
+            // 阻止事件冒泡，避免触发其他事件
+            e.stopPropagation();
+            // 跳转到指定页面
+            window.location.href = 'acrylic-card.html';
+        });
+
+        // 4. 其他商品点击弹窗功能
+        const categoryItems = document.querySelectorAll('.category-item:not(#spring-products)');
+        const productModal = document.getElementById('productModal');
+        const overlay = document.getElementById('overlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalProductImg = document.getElementById('modalProductImg');
+        const modalProductTitle = document.getElementById('modalProductTitle');
+        const modalProductPrice = document.getElementById('modalProductPrice');
+        const modalProductDesc = document.getElementById('modalProductDesc');
+
+        // 商品项点击事件（排除新春制品）
+        categoryItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // 阻止事件冒泡，避免触发导航跳转
+                e.stopPropagation();
+                
+                // 获取商品信息
+                const imgSrc = this.querySelector('img').src;
+                const name = this.dataset.name;
+                const price = this.dataset.price;
+                const desc = this.dataset.desc;
+
+                // 设置弹窗内容
+                modalProductImg.src = imgSrc;
+                modalProductImg.alt = name;
+                modalProductTitle.textContent = name;
+                modalProductPrice.textContent = price;
+                modalProductDesc.textContent = desc;
+
+                // 显示弹窗和遮罩
+                productModal.classList.add('active');
+                overlay.classList.add('active');
+                
+                // 禁止页面滚动
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // 关闭弹窗
+        function closeModal() {
+            productModal.classList.remove('active');
+            overlay.classList.remove('active');
+            // 恢复页面滚动
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+
+        // 按ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
         });
     </script>
 </body>
