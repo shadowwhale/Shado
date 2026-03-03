@@ -564,9 +564,9 @@
         });
 
         // 2. 处理导航跳转逻辑
-        // 关于影塑跳转（可根据实际需求修改地址）
+        // 关于影塑跳转 - 修改为跳转到index.html
         document.getElementById('about-ys').addEventListener('click', function() {
-            window.location.href = 'about.html';
+            window.location.href = 'index.html';
         });
 
         // 产品定制跳转 - 当前页面已是custom.html，点击时不跳转，仅保持激活状态
@@ -584,10 +584,8 @@
         document.getElementById('goto-cart').addEventListener('click', function() {
             window.location.href = 'cart.html';
         });
- // 7. 导航跳转逻辑 - 跳回主页面
-    document.getElementById('back-to-goods').addEventListener('click', function() {
-      window.location.href = 'index.html';
-    });
+        
+        // 移除了无效的back-to-goods元素绑定（原代码中无此元素）
         // 3. 处理新春制品的跳转逻辑
         document.getElementById('spring-products').addEventListener('click', function(e) {
             // 阻止事件冒泡，避免触发其他事件
