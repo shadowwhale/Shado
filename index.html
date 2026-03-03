@@ -459,7 +459,8 @@
             <span>自营工厂</span>
           </div>
         </div>
-        <button class="banner-btn">立即体验</button>
+        <!-- 为按钮添加id，方便JS绑定事件 -->
+        <button class="banner-btn" id="experience-btn">立即体验</button>
       </div>
       <!-- 替换原有四张图片为指定的新年插画 -->
       <div class="banner-images">
@@ -556,6 +557,11 @@
   // 我的商品跳转：跳转到购物车页面 cart.html
   document.getElementById('goto-cart').addEventListener('click', function() {
     window.location.href = 'cart.html';
+  });
+
+  // 3. 新增：立即体验按钮跳转至产品定制页面
+  document.getElementById('experience-btn').addEventListener('click', function() {
+    window.location.href = 'custom.html';
   });
 </script>
 </body>
